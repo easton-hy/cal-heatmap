@@ -1,0 +1,65 @@
+<!DOCTYPE html>    
+<html lang="en">    
+    
+<head>    
+    <title>Cal-Heatmap Samples</title>       
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>    
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>    
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />  
+</head>    
+    
+<body>    
+
+	<div id="cal-heatmap">    
+	</div>  
+
+	<script type="text/javascript">    
+		var datas = [
+		  {date: '2016-03-01', value: 10},
+		  {date: '2016-03-02', value: 30},
+		  {date: '2016-03-03', value: 50}
+		];
+
+		// 定义一个函数将日期字符串转换为时间戳
+		function convertDateToTimestamp(dateString) {
+		  return new Date(dateString).getTime()/1000;
+		}
+
+		// 遍历数组，更新每个元素的日期
+		datas.forEach(function(item) {
+		  item.date = convertDateToTimestamp(item.date);
+		});
+		
+		var parser = function(data) {
+		  var stats = {};
+		  for (var d in data) {
+			stats[data[d].date] = data[d].value;
+		  }
+		  return stats;
+		};
+		
+		var cal = new CalHeatMap();    
+		cal.init({    
+			domain: "month",    
+			subDomain: "day",    
+			cellSize: 18,  
+			itemName: ["service ticket", "service tickets"],			
+			data: datas,
+			afterLoadData: parser,
+			subDomainTextFormat: "%d",    
+			range: 12,  
+			domainGutter: 0,			
+			displayLegend: true,  
+			highlight: [new Date(2016, 01, 15)],			
+			animationDuration: 800,    
+			domainDynamicDimension: false,    
+			start: new Date(2015, 12, 31),    
+			end: new Date(2016, 12, 31),    
+			scale: [10, 20, 80],    
+			previousSelector: "#heatmap-previous",    
+			nextSelector: "#heatmap-next",    
+		});    
+	</script>    
+</body>    
+    
+</html> 
